@@ -5,7 +5,7 @@ A Three.js &amp; Vue.js viewport component for 3D applications.
 This Vue.js component helps make it easier to use Three.js in your applications. The component creates its own camera and renderer (either perspective or orthographic), and uses a global Three.js scene in your Vuex store.
 
 ## Example
-[Live (Coming soon!)]() | [(Source)](https://github.com/ianpaschal/three-vue-viewport/raw/master/example/index.html)
+[Live (Coming soon!)]() | [(Source)](https://github.com/ianpaschal/three-vue-viewport/tree/master/example)
 
 ![alt text][demo]
 
