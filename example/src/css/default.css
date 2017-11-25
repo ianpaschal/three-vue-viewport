@@ -1,0 +1,69 @@
+:root {
+	--background:   #323232;
+	--background-viewport: #191919;
+	--background-viewport-top: #111111;
+	--background-viewport-bottom: #333333;
+	--edge-accent-dark: #212121;
+	--edge-accent:  #525252;
+	--dull-text:    #ACACAC;
+}
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+}
+html, body, #app {
+	width: 100%;
+	height: 100%;
+	background-color: var(--background);
+	overflow: hidden;
+}
+#app {
+	display: flex;
+	flex-direction: column;
+}
+.frame-top {
+	height: 32px;
+	} /* Unused in example. */
+.frame-mid {
+	width: 100%;
+	flex: 1 100%;
+	padding: 2px;
+}
+.frame-bottom {
+	height: 32px;
+	border-top: 1px solid var(--edge-accent-dark);
+}
+.viewport-container {
+	float: left;
+	width: 50%;
+	height: 50%;
+	box-sizing: border-box;
+	padding: 2px;
+}
+.viewport {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.viewport.perspective {
+	background: #CCC; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(var(--background-viewport-top), var(--background-viewport-bottom)); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(var(--background-viewport-top), var(--background-viewport-bottom)); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(var(--background-viewport-top), var(--background-viewport-bottom)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(var(--background-viewport-top), var(--background-viewport-bottom)); /* Standard syntax */
+}
+.viewport.orthographic {
+	background: var(--background-viewport);
+}
+.viewport .layer2D, .viewport .layer3D {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.layer2D {
+
+}
