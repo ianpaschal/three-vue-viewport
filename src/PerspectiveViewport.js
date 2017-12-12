@@ -7,7 +7,7 @@ export default {
 	name: "PerspectiveViewport",
 	directives: {
 		resize
-  },
+	},
 	template: `
 		<div class="viewport perspective"
 			v-on:mousedown="mousedown"
@@ -27,15 +27,18 @@ export default {
 			raycaster: new Three.Raycaster(),
 			mouse: new Three.Vector2(),
 			width: 0,
-			height: 0
+			height: 0,
+			shaded: true,
+			zoom: 3
 		};
 	},
 	mounted() {
 		this.width = this.$el.offsetWidth;
 		this.height = this.$el.offsetHeight;
+		this.aspect = this.width / this.height;
 
 		this.camera = new Three.PerspectiveCamera( 45, this.aspect, 1, 1024 );
-		this.camera.position.set( 8, -8, 8 );
+		this.camera.position.set( this.zoom, this.zoom, this.zoom );
 		this.camera.up.set( 0, 0, 1 );
 		this.camera.lookAt( new Three.Vector3( 0, 0, 0 ) );
 		this.renderer = new Three.WebGLRenderer({
@@ -114,8 +117,8 @@ export default {
 		},
 
 		onResize(e) {
-			this.width = e.offsetWidth;
-			this.height = e.offsetHeight;
+			this.width = this.$el.offsetWidth;
+			this.height = this.$el.offsetHeight;
 			this.camera.aspect = this.width / this.height;
 			this.camera.updateProjectionMatrix();
 			this.renderer.setSize( this.width, this.height );

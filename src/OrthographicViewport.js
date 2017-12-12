@@ -7,7 +7,7 @@ export default {
 	name: "OrthographicViewport",
 	directives: {
 		resize
-  },
+	},
 	template: `
 		<div class="viewport orthographic"
 			v-on:mousedown="mousedown"
@@ -29,20 +29,19 @@ export default {
 			width: 0,
 			height: 0,
 			shaded: true,
-			frustumSize: 8
+			zoom: 4
 		};
 	},
-
 	mounted() {
 		this.width = this.$el.offsetWidth;
 		this.height = this.$el.offsetHeight;
-		let aspect = this.width / this.height;
-		this.frustumSize = 8;
+		this.aspect = this.width / this.height;
+
 		this.camera = new Three.OrthographicCamera(
-			this.frustumSize * this.aspect / -2,
-			this.frustumSize * this.aspect / 2,
-			this.frustumSize / 2,
-			this.frustumSize / -2,
+			this.zoom * this.aspect / -2,
+			this.zoom * this.aspect / 2,
+			this.zoom / 2,
+			this.zoom / -2,
 			1,
 			1024
 		);
@@ -148,13 +147,14 @@ export default {
 		},
 
 		onResize(e) {
-			this.width = e.offsetWidth;
-			this.height = e.offsetHeight;
-			let aspect = this.width / this.height;
-			this.camera.left   = -this.frustumSize * aspect / 2;
-			this.camera.right  =  this.frustumSize * aspect / 2;
-			this.camera.top    =  this.frustumSize / 2;
-			this.camera.bottom = -this.frustumSize / 2;
+			this.width = this.$el.offsetWidth;
+			this.height = this.$el.offsetHeight;
+			this.aspect = this.width / this.height;
+
+			this.camera.left   = this.zoom * this.aspect / -2;
+			this.camera.right  = this.zoom * this.aspect / 2;
+			this.camera.top    = this.zoom / 2;
+			this.camera.bottom = this.zoom / -2;
 			this.camera.updateProjectionMatrix();
 			this.renderer.setSize( this.width, this.height );
 		}
