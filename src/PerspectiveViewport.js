@@ -1,16 +1,23 @@
 import OrbitControlModule from "three-orbit-controls";
 import * as Three from "three";
 const OrbitControls = OrbitControlModule( Three );
+import resize from "vue-resize-directive";
 
 export default {
 	name: "PerspectiveViewport",
+	directives: {
+		resize
+  },
 	template: `
 		<div class="viewport perspective"
 			v-on:mousedown="mousedown"
 			v-on:mousemove="mousemove"
 			v-on:mouseup="mouseup"
+			v-resize.debounce="onResize"
 		>
-			<svg class="layer2D"></svg>
+			<div class="layer2D">
+				<p>Perspective</p>
+			</div>
 			<canvas class="layer3D"></canvas>
 		</div>
 	`,
@@ -104,6 +111,14 @@ export default {
 		// Mouse up:
 		mouseup(e) {
 			this.raycast("mouseup");
+		},
+
+		onResize(e) {
+			this.width = e.offsetWidth;
+			this.height = e.offsetHeight;
+			this.camera.aspect = this.width / this.height;
+			this.camera.updateProjectionMatrix();
+			this.renderer.setSize( this.width, this.height );
 		}
 
 	}

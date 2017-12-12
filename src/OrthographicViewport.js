@@ -1,16 +1,23 @@
 import OrbitControlModule from "three-orbit-controls";
 import * as Three from "three";
 const OrbitControls = OrbitControlModule( Three );
+import resize from "vue-resize-directive";
 
 export default {
 	name: "OrthographicViewport",
+	directives: {
+		resize
+  },
 	template: `
 		<div class="viewport orthographic"
 			v-on:mousedown="mousedown"
 			v-on:mousemove="mousemove"
 			v-on:mouseup="mouseup"
+			v-resize.debounce="onResize"
 		>
-			<svg class="layer2D"></svg>
+			<div class="layer2D">
+				<p>{{ this.viewFormated }}</p>
+			</div>
 			<canvas class="layer3D"></canvas>
 		</div>
 	`,
@@ -20,26 +27,25 @@ export default {
 			raycaster: new Three.Raycaster(),
 			mouse: new Three.Vector2(),
 			width: 0,
-			height: 0
+			height: 0,
+			shaded: true,
+			frustumSize: 8
 		};
 	},
+
 	mounted() {
 		this.width = this.$el.offsetWidth;
 		this.height = this.$el.offsetHeight;
-
-		let frustumSize = 8;
+		let aspect = this.width / this.height;
+		this.frustumSize = 8;
 		this.camera = new Three.OrthographicCamera(
-			frustumSize * this.aspect / -2,
-			frustumSize * this.aspect / 2,
-			frustumSize / 2,
-			frustumSize / -2,
+			this.frustumSize * this.aspect / -2,
+			this.frustumSize * this.aspect / 2,
+			this.frustumSize / 2,
+			this.frustumSize / -2,
 			1,
 			1024
 		);
-		/*
-		this.camera = new Three.PerspectiveCamera( 45, this.aspect, 1, 10000 );
-		*/
-		console.log("View: ", this.view );
 		switch ( this.view ) {
 			case "top":
 				this.camera.position.set( 0, 0, 8 );
@@ -79,6 +85,9 @@ export default {
 	computed: {
 		aspect() {
 			return this.width / this.height;
+		},
+		viewFormated() {
+			return this.view.charAt( 0 ).toUpperCase() + this.view.slice( 1 );
 		}
 	},
 	methods: {
@@ -138,14 +147,16 @@ export default {
 			this.raycast("mouseup");
 		},
 
-		onWindowResize() {
-			var aspect = window.innerWidth / window.innerHeight;
-			camera.left   = -frustumSize * aspect / 2;
-			camera.right  =   frustumSize * aspect / 2;
-			camera.top    =   frustumSize / 2;
-			camera.bottom = -frustumSize / 2;
-			camera.updateProjectionMatrix();
-			renderer.setSize( window.innerWidth, window.innerHeight );
+		onResize(e) {
+			this.width = e.offsetWidth;
+			this.height = e.offsetHeight;
+			let aspect = this.width / this.height;
+			this.camera.left   = -this.frustumSize * aspect / 2;
+			this.camera.right  =  this.frustumSize * aspect / 2;
+			this.camera.top    =  this.frustumSize / 2;
+			this.camera.bottom = -this.frustumSize / 2;
+			this.camera.updateProjectionMatrix();
+			this.renderer.setSize( this.width, this.height );
 		}
 
 	}
