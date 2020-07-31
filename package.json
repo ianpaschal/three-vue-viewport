@@ -28,7 +28,7 @@
   "homepage": "https://github.com/ianpaschal/three-vue-viewport#readme",
   "dependencies": {
     "stats-js": "^1.0.0-alpha1",
-    "three": "^0.88.0",
+    "three": "^0.119.1",
     "three-orbit-controls": "^82.1.0",
     "vue": "^2.5.17",
     "vue-resize-directive": "^1.0.0"
